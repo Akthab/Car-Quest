@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.2.6",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.9",
+    "@tanstack/react-query": "^4.35.3",
+    "@tanstack/react-query-devtools": "^4.35.3",
+    "axios": "^1.5.0",
+    "formik": "^2.4.4",
+    "html-react-parser": "^4.2.2",
+    "next": "latest",
+    "notistack": "^3.0.1",
+    "react": "18.2.0",
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-icons": "^4.11.0",
+    "react-modal": "^3.16.1",
+    "yup": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;600&family=Roboto+Slab:wght@300;400&display=swap');
+
+.screen {
+	display: flex;
+	height: 100vh; /* Set the height of the screen to 100% of the viewport */
+}
+
+.typography_style {
+	font-family: 'Josefin Sans', sans-serif;
+	margin-bottom: 8px;
+	font-size: 22px;
+	font-weight: 600;
+}
+
+.left_half,
+.right_half {
+	flex: 1; /* Each half should take an equal amount of space */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.left_half {
+	background-image: url('../../../public/images/mesh.jpg');
+	background-repeat: no-repeat;
+	background-size: cover; /* Example background color for the left half */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.right_half {
+	background-color: #eaeaea; /* Example background color for the right half */
+}
+
+.background_image {
+	background-image: url('../../../public/images/mesh.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.information_cont {
+	position: relative;
+	width: 40vh; /* Adjust the size as needed */
+	height: 60vh; /* Adjust the size as needed */
+	background-color: rgba(97, 233, 243, 0.3);
+	backdrop-filter: blur(10px);
+	border-radius: 10px;
+	padding: 20px; /* Adjust the padding as needed */
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+	font-family: 'Roboto Slab', serif;
+}
+
+.font_style {
+	background: linear-gradient(45deg, #58ff5d, #a83367);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	-webkit-text-stroke: 0.4px black;
+}
+
+.login_cont {
+	position: relative;
+	width: 48vh; /* Adjust the size as needed */
+	height: 60vh; /* Adjust the size as needed */
+	background-color: rgba(97, 233, 243, 0.3);
+	backdrop-filter: blur(10px);
+	border-radius: 10px;
+	padding: 20px; /* Adjust the padding as needed */
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+	font-family: 'Roboto Slab', serif;
+}
