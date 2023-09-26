@@ -136,7 +136,7 @@ const AddPost = (props) => {
 
 	return (
 		<div>
-			<Typography>This is Akthab</Typography>
+			{/* <Typography>This is Akthab</Typography> */}
 			{/* <Button variant='contained' onClick={openModal} className='bg-blue-500'>
 				Add Post
 			</Button> */}
