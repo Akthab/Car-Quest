@@ -89,14 +89,24 @@ const AddPost = (props) => {
 		data: dataNew,
 		isError,
 		error,
-	} = useQuery({ queryKey: ['year-options'], queryFn: fetchYearOptions });
+	} = useQuery({
+		queryKey: ['year-options'],
+		queryFn: fetchYearOptions,
+		refetchOnWindowFocus: false,
+		staleTime: Infinity,
+	});
 
 	const {
 		isLoading: isLoadingType,
 		data: dataType,
 		isErrorNew,
 		errorNew,
-	} = useQuery({ queryKey: ['type-options'], queryFn: fetchTypeOptions });
+	} = useQuery({
+		queryKey: ['type-options'],
+		queryFn: fetchTypeOptions,
+		refetchOnWindowFocus: false,
+		staleTime: Infinity,
+	});
 
 	const {
 		isLoading: isLoadingMake,
@@ -104,18 +114,17 @@ const AddPost = (props) => {
 		isErrorMake,
 		errormake,
 	} = useQuery(
-		{ queryKey: ['make-options'], queryFn: fetchMakeOptions },
+		{
+			queryKey: ['make-options'],
+			queryFn: fetchMakeOptions,
+			refetchOnWindowFocus: false,
+			staleTime: Infinity,
+		},
 		{
 			onSuccess: () => {
 				// The following message will be shown in the snackbar when the query is successful
 				enqueueSnackbar('Data successfully fetched!', { variant: 'success' });
 			},
-			staleTime: 30000,
-			cacheTime: 50000,
-			refetchOnMount: false,
-			refetchOnWindowFocus: false,
-			pollingInterval: 60000,
-			refetchInterval: 60000,
 		}
 	);
 
