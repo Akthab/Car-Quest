@@ -1,13 +1,30 @@
 import { useFormik } from 'formik';
 import Home from './home-page';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import router from 'next/router';
+import { backendAuth } from '../../axios/instance/BaseAxios';
+import { useSelector } from 'react-redux';
+import { store } from '../../store/reduxStore';
+import { getUserDetailsByHeader, login } from '../../utils/authenticationUtil';
 
 const HomePageController = () => {
+	// @ts-ignore
+	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
 	const [newFile, setNewFile] = useState('');
 	const [selectedYear, setSelectedYear] = useState('');
 	const [selectedType, setSelectedType] = useState('');
 	const [selectedMake, setSelectedMake] = useState('');
 	const [question, setQuestion] = useState(''); // Initialize with an empty string or any default value you prefer
+	const [loading, setAddLoading] = useState(false);
+
+	useEffect(() => {
+		getUserDetailsByHeader();
+	});
+
+	const handleGoProfile = () => {
+		router.push('/profile/profile-page');
+	};
 
 	const formik = useFormik({
 		initialValues: {
@@ -38,6 +55,7 @@ const HomePageController = () => {
 	};
 
 	const handleAddPost = async (e) => {
+		setAddLoading(true);
 		const formData = new FormData();
 		formData.append('question', formik.values.question);
 		formData.append('selectedMake', formik.values.selectedMake);
@@ -47,17 +65,14 @@ const HomePageController = () => {
 			e.preventDefault();
 			await backendAuth({
 				url: 'http://localhost:8080/api/upload',
-				data: {
-					email: formik.values.email,
-					password: formik.values.password,
-				},
+				data: formData,
 			})
 				.then((response) => {
 					router.push('/home/home-page'); // Replace '/homepage' with the actual path of your homepage route
-					setLoginIsLoading(false);
+					setAddLoading(false);
 				})
 				.catch((err) => {
-					setLoginIsLoading(false);
+					setAddLoading(false);
 				});
 		} else {
 			formik.resetForm();
@@ -79,6 +94,7 @@ const HomePageController = () => {
 			setNewFile={setNewFile}
 			newFile={newFile}
 			handleAddPost={handleAddPost}
+			handleGoProfile={handleGoProfile}
 		/>
 	);
 };

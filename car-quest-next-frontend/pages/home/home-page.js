@@ -1,5 +1,6 @@
+// @ts-nocheck
 import Image from 'next/image';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import styles from './home-page.module.css';
 import { useSnackbar } from 'notistack';
@@ -14,11 +15,10 @@ import {
 	FormControl,
 } from '@mui/material';
 
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 
 // third party
 import { FormikProvider } from 'formik';
-import React from 'react';
 import Dropzone from '../../components/drop_zone';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
@@ -37,6 +37,7 @@ const Home = (props) => {
 		setNewFile,
 		newFile,
 		handleAddPost,
+		handleGoProfile,
 	} = props;
 
 	// const { errors, touched, getFieldProps } = formik;
@@ -111,19 +112,11 @@ const Home = (props) => {
 		data: dataMake,
 		isErrorMake,
 		errormake,
-	} = useQuery(
-		{
-			queryKey: ['make-options'],
-			queryFn: fetchMakeOptions,
-			cacheTime: Infinity,
-		},
-		{
-			onSuccess: () => {
-				// The following message will be shown in the snackbar when the query is successful
-				enqueueSnackbar('Data successfully fetched!', { variant: 'success' });
-			},
-		}
-	);
+	} = useQuery({
+		queryKey: ['make-options'],
+		queryFn: fetchMakeOptions,
+		cacheTime: Infinity,
+	});
 
 	if (isLoadingYear || isLoadingType || isLoadingMake) {
 		return <h2> Loading ...</h2>;
@@ -146,10 +139,18 @@ const Home = (props) => {
 			<Button variant='contained' onClick={openModal} className='bg-blue-500'>
 				Add Post
 			</Button>
+			<Button
+				variant='contained'
+				onClick={handleGoProfile}
+				className='bg-blue-500'
+			>
+				Profile Page
+			</Button>
 			<Modal
 				isOpen={modalOpen}
 				onRequestClose={() => setModalOpen(false)}
 				className='modal-dialog mx-auto sm:w-2/3 md:w-1/2 lg:w-2/3 xl:w-3/4'
+				ariaHideApp={false}
 			>
 				<Image
 					priority

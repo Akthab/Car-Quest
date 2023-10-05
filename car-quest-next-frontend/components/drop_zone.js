@@ -3,6 +3,7 @@ import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import parse from 'html-react-parser';
+import React from 'react';
 
 export const Dropzone = (props) => {
 	const { setNewFile } = props;
