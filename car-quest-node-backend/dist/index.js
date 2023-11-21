@@ -21,7 +21,3 @@ app.use((error, req, res, next) => {
 app.listen(8080, () => {
     console.log('Server has started running on port 8080');
 });
-// S3_BUCKET = 'thefirstbucketyo';
-// AWS_ACCESS_KEY_ID = 'AKIA45AZE7WUGTGPQUL2';
-// AWS_SECRET_ACCESS_KEY = 'mjLHncR9BjEeJdp1AZxpWQNqTumRON8';
-// AWS_REGION = 'ap-south-1';
