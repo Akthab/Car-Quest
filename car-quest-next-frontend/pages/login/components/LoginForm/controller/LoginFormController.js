@@ -1,14 +1,15 @@
+import React from 'react';
 import { useState } from 'react';
 import LoginFormView from '../view/LoginFormView';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { backendAuth } from '../../../../../axios/instance/BaseAxios';
 import { useRouter } from 'next/router';
-// import { reduxStore } from "store/reduxStore";
-// import { setSessionToken } from "store/reducers/userProfile";
-// import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { setSessionToken } from '../../../../../store/slice/userSlice';
 
 const LoginFormController = () => {
+	const dispatch = useDispatch();
 	const LoginSchema = Yup.object().shape({
 		email: Yup.string()
 			.email('Must be a valid email')
@@ -29,7 +30,6 @@ const LoginFormController = () => {
 		},
 	});
 
-	// const navigate = useNavigate();
 	const [loginIsLoading, setLoginIsLoading] = useState(false);
 	const router = useRouter();
 
@@ -46,7 +46,9 @@ const LoginFormController = () => {
 				},
 			})
 				.then((response) => {
-					router.push('/home/home-page-controller'); // Replace '/homepage' with the actual path of your homepage route
+					console.log(response.data.user);
+					dispatch(setSessionToken(response.data.user));
+					router.push('/home/home-page-controller');
 					setLoginIsLoading(false);
 				})
 				.catch((err) => {

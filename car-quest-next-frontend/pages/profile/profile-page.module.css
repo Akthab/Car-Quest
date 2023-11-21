@@ -1,0 +1,21 @@
+.card_style {
+	/* Center the card horizontally */
+	margin: 26px auto;
+
+	/* Center the card vertically */
+	/* display: flex-col; */
+	justify-content: center;
+	align-items: center;
+	/* Add a border to the card */
+	border: 1px solid #ccc;
+
+	/* Add a rounded border to the card */
+	border-radius: 5px;
+
+	/* Add some padding to the card */
+	padding: 10px;
+
+	/* Add a box shadow to the card */
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	width: 680px;
+}
