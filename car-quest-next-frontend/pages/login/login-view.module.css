@@ -21,7 +21,7 @@
 }
 
 .left_half {
-	background-image: url('../../../public/images/mesh.jpg');
+	background-image: url('../../public/images/mesh.jpg');
 	background-repeat: no-repeat;
 	background-size: cover; /* Example background color for the left half */
 	display: flex;
@@ -34,7 +34,7 @@
 }
 
 .background_image {
-	background-image: url('../../../public/images/mesh.jpg');
+	background-image: url('../../public/images/mesh.jpg');
 	background-repeat: no-repeat;
 	background-size: cover;
 }

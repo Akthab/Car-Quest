@@ -50,6 +50,7 @@ export const Dropzone = (props) => {
 			<div
 				{...getRootProps()}
 				className='max-w-2xl  h-48 border-4 border-dashed border-gray-400 flex items-center justify-center mx-auto'
+				style={{ backgroundColor: 'rgb(218, 255, 234)' }}
 			>
 				<div
 					{...getRootProps()}

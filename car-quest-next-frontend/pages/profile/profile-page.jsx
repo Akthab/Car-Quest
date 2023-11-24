@@ -106,6 +106,10 @@ const ProfilePage = (props) => {
 					<Stack spacing={1}>
 						<InputLabel htmlFor='email-login'>Phone Number</InputLabel>
 						<PhoneInput
+							style={{
+								border: '2px solid rgba(196,196,196)',
+								padding: '10px',
+							}}
 							placeholder='Enter phone number'
 							value={userDetails.phoneNumber}
 							// @ts-ignore
@@ -114,8 +118,6 @@ const ProfilePage = (props) => {
 					</Stack>
 				</Grid>
 			</Grid>
-			<Typography>Hello World</Typography>
-			<Typography>Hello World</Typography>
 		</div>
 	);
 };

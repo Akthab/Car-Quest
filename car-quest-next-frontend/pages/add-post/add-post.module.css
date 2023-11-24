@@ -1,3 +1,6 @@
+/* body {
+	background-color: #d7eaeac2;
+} */
 .image_style {
 	transform: rotate(-20deg);
 }
@@ -7,6 +10,12 @@
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	background-color: #ffffffc2;
+	padding: 80px;
+	border-radius: 9px;
+	margin-top: 55px;
+	box-shadow: 1px 1px 10px 1px grey;
+	margin-bottom: 30px;
 }
 
 .modal_styles {
@@ -31,6 +40,11 @@
 
 .image_cont {
 	grid-column: span 2;
+}
+
+.post_title {
+	width: 100%;
+	background-color: rgb(218, 255, 234);
 }
 
 .multi_com {
