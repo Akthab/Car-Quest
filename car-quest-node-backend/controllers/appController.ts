@@ -1,4 +1,5 @@
 import UserModel from '../models/User.model.js';
+import PostModel from '../models/Post.model.js';
 import { Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
@@ -6,6 +7,8 @@ import { Upload } from '@aws-sdk/lib-storage';
 import multer from 'multer';
 import { S3 } from '@aws-sdk/client-s3';
 import { UserDetailsResponse } from '../model';
+import { v4 as uuidv4 } from 'uuid';
+import sharp from 'sharp';
 
 /** POST: http://localhost:8080/api/login 
  * @param: {
@@ -72,6 +75,7 @@ export async function register(req, res) {
 			lastName: req.body.lastName,
 			email: req.body.email,
 			phoneNumber: req.body.phoneNumber,
+			profileImage: null,
 			password: newPassword, // Use the hashed password
 		});
 		res.send({ status: 'User registered successfully' });
@@ -81,7 +85,14 @@ export async function register(req, res) {
 	}
 }
 
-export async function updateUserNew(req, res) {
+/** POST: http://localhost:8080/api/updateUser 
+ * @param: {
+  "firstName" : "Hello",
+  "lastName": "World",
+  "phoneNumber": "+94 71 234 5678"
+}
+*/
+export async function updateUser(req, res) {
 	// Get the bearer token from the authorization header.
 	const token = req.headers.authorization.split(' ')[1];
 
@@ -110,7 +121,6 @@ export async function updateUserNew(req, res) {
 			}
 		);
 
-		// Return the user's quote.
 		return res.json({ status: 'User Updated Success' });
 	} catch (error) {
 		console.log(error);
@@ -118,47 +128,86 @@ export async function updateUserNew(req, res) {
 	}
 }
 
-const upload = multer({
-	dest: 'files/', // Location where files will be saved
-});
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const s3 = new S3({
-	region: 'ap-south-1',
+	region: process.env.AWS_REGION,
 	credentials: {
-		accessKeyId: 'AKIA45AZE7WUGTGPQUL2',
-		secretAccessKey: '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',
+		accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+		secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 	},
 });
 
-export async function uploadImage(req, res) {
-	const uploadMiddleware = upload.any();
-	uploadMiddleware(req, res, async (err) => {
-		if (err) {
-			console.error(err);
-			return;
-		}
+//function to upload image to AWS S3 bucket
+async function uploadImageNew(imageFile) {
+	const file = imageFile;
+	const fileBuffer = Buffer.from(file.buffer);
 
-		const file = req.files;
-		const uploadParams = {
-			Bucket: 'thefirstbucketyo',
-			Key: file[0].originalname,
-			Body: Buffer.from(file[0].path),
-		};
+	const resizedBuffer = await sharp(fileBuffer)
+		.resize({ height: 1920, width: 1080, fit: 'contain' })
+		.toBuffer();
 
-		try {
-			const data = await new Upload({
-				client: s3,
-				params: uploadParams,
-			}).done();
-			// console.log('Upload Success', data.Location);
-		} catch (err) {
-			console.log('Error', err);
-		}
+	const uploadParams = {
+		Bucket: process.env.AWS_S3_BUCKET,
+		Key: uuidv4(),
+		Body: resizedBuffer,
+		ContentType: file.mimetype,
+	};
 
-		res.json({ message: 'Upload successful' });
-	});
+	try {
+		const data = await new Upload({
+			client: s3,
+			params: uploadParams,
+		}).done();
+
+		const uploadImageUrl = data['Location'];
+
+		return uploadImageUrl;
+	} catch (err) {
+		console.log('Error', err);
+	}
 }
 
+/** POST: http://localhost:8080/api/addPost 
+ * @param: {
+  "postTitle" : "Misfiring in the engine",
+  "postDescription": "The engine keeps misfiring when the rpm is above 2000rpm",
+  "postCarMake": "Toyota",
+  "postCarModel": "Camry",
+  "postCarType": "Sedan",
+  "postImageUrl": "https/xyzzz/aabcccc/ghjjjj"
+}
+*/
+
+export async function addPost(req, res) {
+	try {
+		const uploadMiddleware = upload.single('image');
+
+		uploadMiddleware(req, res, async (err) => {
+			const postImageUrl = await uploadImageNew(req.file);
+
+			const post = await PostModel.create({
+				postTitle: req.body.postTitle,
+				postDescription: req.body.postDescription,
+				postCarMake: req.body.postCarMake,
+				postCarYear: req.body.postCarYear,
+				postCarType: req.body.postCarType,
+				postImageUrl: postImageUrl,
+			});
+		});
+
+		res.json({ message: 'Post creation successful' });
+	} catch (error) {
+		res.status(500).json({ error: 'Internal server error' });
+	}
+}
+
+/** POST: http://localhost:8080/api/getUserDetailsByHeader 
+ * @param: {
+ * jwtToken: eyzxcvbnbvcxvbnmbnmmnbvbnmnbvbnmnbv
+}
+*/
 export async function getUserDetailsByHeader(req, res: Response) {
 	const token = req.headers.authorization.split(' ')[1];
 
