@@ -9,6 +9,8 @@
     "@ant-design/icons": "^5.2.6",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@material/icon-button": "^14.0.0",
+    "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.9",
     "@reduxjs/toolkit": "^1.9.6",
     "@tanstack/react-query": "^4.35.3",

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import {
 	Button,
 	Checkbox,
-	Divider,
 	FormControlLabel,
 	FormHelperText,
 	Grid,
@@ -21,11 +20,7 @@ import { MdWavingHand } from 'react-icons/md';
 // third party
 import { FormikProvider } from 'formik';
 
-import styles from '../../../style/login-view.module.css';
-
-// project import
-// import FirebaseSocial from './FirebaseSocial';
-// import AnimateButton from 'components/@extended/AnimateButton';
+import styles from '../../login-view.module.css';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
@@ -46,10 +41,6 @@ const LoginFormView = (props) => {
 
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
-	};
-
-	const handleSubmit = () => {
-		console.log('SUBMIT');
 	};
 
 	return (
@@ -164,14 +155,6 @@ const LoginFormView = (props) => {
 							Logins
 						</Button>
 						{/* </AnimateButton> */}
-					</Grid>
-					<Grid item xs={12}>
-						<Divider>
-							<Typography variant='caption'> Login with</Typography>
-						</Divider>
-					</Grid>
-					<Grid item xs={12}>
-						{/* <FirebaseSocial /> */}
 					</Grid>
 				</Grid>
 			</FormikProvider>

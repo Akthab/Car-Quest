@@ -1,8 +1,8 @@
 import React from 'react';
-import styles from '../style/login-view.module.css';
-import LoginFormController from '../components/LoginForm/controller/LoginFormController';
+import styles from './login-view.module.css';
+import LoginFormController from './components/login-form/login-form-controller';
 
-export default function Screen() {
+export default function LoginView() {
 	return (
 		<div className={styles.screen}>
 			<div className={styles.left_half}>

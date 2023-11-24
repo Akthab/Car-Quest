@@ -1,12 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
-import LoginFormView from '../view/LoginFormView';
+import LoginFormView from './login-form-view';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { backendAuth } from '../../../../../axios/instance/BaseAxios';
+import { backendAuth } from '../../../../axios/instance/BaseAxios';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { setSessionToken } from '../../../../../store/slice/userSlice';
+import { setSessionToken } from '../../../../store/slice/userSlice';
 
 const LoginFormController = () => {
 	const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const LoginFormController = () => {
 				.then((response) => {
 					console.log(response.data.user);
 					dispatch(setSessionToken(response.data.user));
-					router.push('/home/home-page-controller');
+					router.push('/home');
 					setLoginIsLoading(false);
 				})
 				.catch((err) => {
