@@ -8,6 +8,7 @@ const PostSchema = new mongoose.Schema(
 		postCarYear: { type: String, required: true },
 		postImageUrl: { type: String, required: false },
 		postCarType: { type: String, required: false },
+		postCarFuelType: { type: String, required: false },
 	},
 	{ collection: 'posts' }
 );

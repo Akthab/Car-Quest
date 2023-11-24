@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserDetailsByHeader = exports.addPost = exports.updateUser = exports.register = exports.login = void 0;
+exports.getAllPosts = exports.getUserDetailsByHeader = exports.addPost = exports.updateUser = exports.register = exports.login = void 0;
 const User_model_js_1 = __importDefault(require("../models/User.model.js"));
 const Post_model_js_1 = __importDefault(require("../models/Post.model.js"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -11,7 +11,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const lib_storage_1 = require("@aws-sdk/lib-storage");
 const multer_1 = __importDefault(require("multer"));
 const client_s3_1 = require("@aws-sdk/client-s3");
-const model_1 = require("../model");
+const userResponse_1 = require("../model/userResponse");
 const uuid_1 = require("uuid");
 const sharp_1 = __importDefault(require("sharp"));
 /** POST: http://localhost:8080/api/login
@@ -26,7 +26,6 @@ async function login(req, res) {
             email: req.body.email,
         });
         if (!user) {
-            console.log('No matching user');
             return res.send({
                 status: 'error',
                 error: 'Invalid user does not exist',
@@ -113,7 +112,6 @@ async function updateUser(req, res) {
         return res.json({ status: 'User Updated Success' });
     }
     catch (error) {
-        console.log(error);
         res.json({ status: 'error', error: 'invalid token' });
     }
 }
@@ -166,13 +164,17 @@ async function addPost(req, res) {
     try {
         const uploadMiddleware = upload.single('image');
         uploadMiddleware(req, res, async (err) => {
-            const postImageUrl = await uploadImageNew(req.file);
+            let postImageUrl = null;
+            if (req.file) {
+                postImageUrl = await uploadImageNew(req.file);
+            }
             const post = await Post_model_js_1.default.create({
                 postTitle: req.body.postTitle,
                 postDescription: req.body.postDescription,
                 postCarMake: req.body.postCarMake,
                 postCarYear: req.body.postCarYear,
                 postCarType: req.body.postCarType,
+                postCarFuelType: req.body.postCarFuelType,
                 postImageUrl: postImageUrl,
             });
         });
@@ -204,7 +206,7 @@ async function getUserDetailsByHeader(req, res) {
         }
         const user = await User_model_js_1.default.findOne({ email: email });
         if (user != null) {
-            const userDetailsResponse = new model_1.UserDetailsResponse(user.id, user.firstName, user.lastName, user.email, user.phoneNumber);
+            const userDetailsResponse = new userResponse_1.UserDetailsResponse(user.id, user.firstName, user.lastName, user.email, user.phoneNumber);
             res.json(userDetailsResponse);
         }
         else {
@@ -212,8 +214,32 @@ async function getUserDetailsByHeader(req, res) {
         }
     }
     catch (error) {
-        console.log(error);
         res.json({ status: 'error', error: 'invalid token' });
     }
 }
 exports.getUserDetailsByHeader = getUserDetailsByHeader;
+async function getAllPosts(req, res) {
+    try {
+        const allPosts = await Post_model_js_1.default.find({});
+        if (allPosts != null) {
+            // const postDetailsResponse = new PostDetailsResponse(
+            // 	userPost.id,
+            // 	userPost.postTitle,
+            // 	userPost.postDescription,
+            // 	userPost.postCarMake,
+            // 	userPost.postCarYear,
+            // 	userPost.postImageUrl,
+            // 	userPost.postCarType,
+            // 	userPost.postCarFuelType
+            // );
+            res.json(allPosts);
+        }
+        else {
+            return res.json({ status: 'No posts found' });
+        }
+    }
+    catch (error) {
+        res.json({ status: 'error', error: 'invalid token' });
+    }
+}
+exports.getAllPosts = getAllPosts;

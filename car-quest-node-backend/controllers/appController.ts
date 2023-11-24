@@ -6,7 +6,8 @@ import bcrypt from 'bcryptjs';
 import { Upload } from '@aws-sdk/lib-storage';
 import multer from 'multer';
 import { S3 } from '@aws-sdk/client-s3';
-import { UserDetailsResponse } from '../model';
+import { UserDetailsResponse } from '../model/userResponse';
+import { PostDetailsResponse } from '../model/postResponse';
 import { v4 as uuidv4 } from 'uuid';
 import sharp from 'sharp';
 
@@ -23,7 +24,6 @@ export async function login(req, res) {
 		});
 
 		if (!user) {
-			console.log('No matching user');
 			return res.send({
 				status: 'error',
 				error: 'Invalid user does not exist',
@@ -123,7 +123,6 @@ export async function updateUser(req, res) {
 
 		return res.json({ status: 'User Updated Success' });
 	} catch (error) {
-		console.log(error);
 		res.json({ status: 'error', error: 'invalid token' });
 	}
 }
@@ -185,7 +184,11 @@ export async function addPost(req, res) {
 		const uploadMiddleware = upload.single('image');
 
 		uploadMiddleware(req, res, async (err) => {
-			const postImageUrl = await uploadImageNew(req.file);
+			let postImageUrl = null;
+
+			if (req.file) {
+				postImageUrl = await uploadImageNew(req.file);
+			}
 
 			const post = await PostModel.create({
 				postTitle: req.body.postTitle,
@@ -193,6 +196,7 @@ export async function addPost(req, res) {
 				postCarMake: req.body.postCarMake,
 				postCarYear: req.body.postCarYear,
 				postCarType: req.body.postCarType,
+				postCarFuelType: req.body.postCarFuelType,
 				postImageUrl: postImageUrl,
 			});
 		});
@@ -241,7 +245,30 @@ export async function getUserDetailsByHeader(req, res: Response) {
 			return res.json({ status: 'No user found for the token' });
 		}
 	} catch (error) {
-		console.log(error);
+		res.json({ status: 'error', error: 'invalid token' });
+	}
+}
+
+export async function getAllPosts(req, res) {
+	try {
+		const allPosts = await PostModel.find({});
+
+		if (allPosts != null) {
+			// const postDetailsResponse = new PostDetailsResponse(
+			// 	userPost.id,
+			// 	userPost.postTitle,
+			// 	userPost.postDescription,
+			// 	userPost.postCarMake,
+			// 	userPost.postCarYear,
+			// 	userPost.postImageUrl,
+			// 	userPost.postCarType,
+			// 	userPost.postCarFuelType
+			// );
+			res.json(allPosts);
+		} else {
+			return res.json({ status: 'No posts found' });
+		}
+	} catch (error) {
 		res.json({ status: 'error', error: 'invalid token' });
 	}
 }
