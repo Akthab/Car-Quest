@@ -150,7 +150,7 @@ async function uploadImageNew(imageFile) {
 	const uploadParams = {
 		Bucket: process.env.AWS_S3_BUCKET,
 		Key: uuidv4(),
-		Body: resizedBuffer,
+		Body: fileBuffer,
 		ContentType: file.mimetype,
 	};
 
@@ -270,5 +270,22 @@ export async function getAllPosts(req, res) {
 		}
 	} catch (error) {
 		res.json({ status: 'error', error: 'invalid token' });
+	}
+}
+
+export async function deletePost(req, res) {
+	try {
+		const postId = req.params.postId;
+
+		const deleted = await PostModel.deleteOne({ _id: postId });
+
+		if (deleted.deletedCount > 0) {
+			return res.json({ status: 'Post deleted' });
+		} else {
+			return res.json({ status: 'No post found with the given ID' });
+		}
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ error: 'Internal Server Error' });
 	}
 }

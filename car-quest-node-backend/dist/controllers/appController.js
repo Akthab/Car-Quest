@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllPosts = exports.getUserDetailsByHeader = exports.addPost = exports.updateUser = exports.register = exports.login = void 0;
+exports.deletePost = exports.getAllPosts = exports.getUserDetailsByHeader = exports.addPost = exports.updateUser = exports.register = exports.login = void 0;
 const User_model_js_1 = __importDefault(require("../models/User.model.js"));
 const Post_model_js_1 = __importDefault(require("../models/Post.model.js"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -135,7 +135,7 @@ async function uploadImageNew(imageFile) {
     const uploadParams = {
         Bucket: process.env.AWS_S3_BUCKET,
         Key: (0, uuid_1.v4)(),
-        Body: resizedBuffer,
+        Body: fileBuffer,
         ContentType: file.mimetype,
     };
     try {
@@ -243,3 +243,21 @@ async function getAllPosts(req, res) {
     }
 }
 exports.getAllPosts = getAllPosts;
+async function deletePost(req, res) {
+    try {
+        const postId = req.params.postId;
+        console.log('Deleting post with id:', postId);
+        const deleted = await Post_model_js_1.default.deleteOne({ _id: postId });
+        if (deleted.deletedCount > 0) {
+            return res.json({ status: 'Post deleted' });
+        }
+        else {
+            return res.json({ status: 'No post found with the given ID' });
+        }
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+exports.deletePost = deletePost;
