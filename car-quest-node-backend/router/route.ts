@@ -9,5 +9,6 @@ router.route('/updateUser').post(controller.updateUser); // update user
 router.route('/getUserDetailsByHeader').post(controller.getUserDetailsByHeader); // get user details by header
 router.route('/addPost').post(controller.addPost); // add post
 router.route('/getAllPosts').get(controller.getAllPosts); //get all posts
+router.route('/deletePost/:postId').delete(controller.deletePost); // delete post
 
 export default router;
