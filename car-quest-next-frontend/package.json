@@ -24,6 +24,7 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-icons": "^4.11.0",
+    "react-image-crop": "^10.1.8",
     "react-modal": "^3.16.1",
     "react-phone-number-input": "^3.3.6",
     "react-redux": "^8.1.2",

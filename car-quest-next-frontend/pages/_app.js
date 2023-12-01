@@ -3,6 +3,7 @@ import '../styles/globals.css';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SnackbarProvider } from 'notistack';
+import 'react-image-crop/dist/ReactCrop.css';
 import { store } from '../store/reduxStore';
 import { Provider } from 'react-redux';
 import React from 'react';

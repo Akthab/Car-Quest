@@ -5,9 +5,7 @@ import { Button } from '@mui/material';
 import PostCard from '../../components/post_card';
 
 const Home = (props) => {
-	const { handleGoProfile, handleGoAddPost } = props;
-
-	// const { errors, touched, getFieldProps } = formik;
+	const { handleGoProfile, handleGoAddPost, posts, postIsLoading } = props;
 
 	return (
 		<div>
@@ -25,7 +23,13 @@ const Home = (props) => {
 			>
 				Add Post
 			</Button>
-			<PostCard />
+			<div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
+				{postIsLoading ? (
+					<p> Loading</p>
+				) : (
+					posts.map((post) => <PostCard key={post._id} post={post} />)
+				)}
+			</div>
 		</div>
 	);
 };
