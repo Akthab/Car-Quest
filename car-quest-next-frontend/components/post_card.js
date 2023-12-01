@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -26,8 +26,9 @@ const ExpandMore = styled((props) => {
 	}),
 }));
 
-export default function PostCard() {
-	const [expanded, setExpanded] = React.useState(false);
+export default function PostCard(props) {
+	const { post } = props;
+	const [expanded, setExpanded] = useState(false);
 
 	const handleExpandClick = () => {
 		setExpanded(!expanded);
@@ -36,7 +37,7 @@ export default function PostCard() {
 	return (
 		<Card
 			sx={{
-				maxWidth: 345,
+				maxWidth: 300,
 			}}
 		>
 			<CardHeader
@@ -50,20 +51,19 @@ export default function PostCard() {
 						<MoreVertIcon />
 					</IconButton>
 				}
-				title='Shrimp and Chorizo Paella'
-				subheader='September 14, 2016'
+				title={post.postTitle}
+				// subheader={post.postImageUrl}
 			/>
 			<CardMedia
 				component='img'
-				height='194'
-				image='/images/car_repair.jpg'
+				image={post.postImageUrl}
 				alt='Paella dish'
+				// height={40}
+				style={{ height: '300px' }}
 			/>
 			<CardContent>
 				<Typography variant='body2' color='text.secondary'>
-					This impressive paella is a perfect party dish and a fun meal to cook
-					together with your guests. Add 1 cup of frozen peas along with the
-					mussels, if you like.
+					{post.postDescription}
 				</Typography>
 			</CardContent>
 			<CardActions disableSpacing>
