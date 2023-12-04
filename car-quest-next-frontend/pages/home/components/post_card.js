@@ -14,6 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import LikeButton from './like-button';
 
 const ExpandMore = styled((props) => {
 	const { expand, ...other } = props;
@@ -27,7 +28,7 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function PostCard(props) {
-	const { post } = props;
+	const { post, handleLike } = props;
 	const [expanded, setExpanded] = useState(false);
 
 	const handleExpandClick = () => {
@@ -67,9 +68,10 @@ export default function PostCard(props) {
 				</Typography>
 			</CardContent>
 			<CardActions disableSpacing>
-				<IconButton aria-label='add to favorites'>
-					<FavoriteIcon />
-				</IconButton>
+				{/* <IconButton aria-label='add to favorites'> */}
+				<LikeButton postId={post._id} />
+				{/* <FavoriteIcon /> */}
+				{/* </IconButton> */}
 				<IconButton aria-label='share'>
 					<ShareIcon />
 				</IconButton>
