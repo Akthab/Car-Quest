@@ -12,6 +12,13 @@ const PostSchema = new mongoose_1.default.Schema({
     postImageUrl: { type: String, required: false },
     postCarType: { type: String, required: false },
     postCarFuelType: { type: String, required: false },
+    postLikes: { type: Number, default: 0 },
+    likedBy: [
+        {
+            type: mongoose_1.default.Schema.Types.ObjectId,
+            ref: 'UserModel',
+        },
+    ],
 }, { collection: 'posts' });
 const PostModel = mongoose_1.default.model('Post', PostSchema); // Use 'User' as the model name
 exports.default = PostModel;

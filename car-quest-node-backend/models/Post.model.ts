@@ -9,6 +9,13 @@ const PostSchema = new mongoose.Schema(
 		postImageUrl: { type: String, required: false },
 		postCarType: { type: String, required: false },
 		postCarFuelType: { type: String, required: false },
+		postLikes: { type: Number, default: 0 },
+		likedBy: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'UserModel',
+			},
+		],
 	},
 	{ collection: 'posts' }
 );

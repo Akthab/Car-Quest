@@ -10,5 +10,6 @@ router.route('/getUserDetailsByHeader').post(controller.getUserDetailsByHeader);
 router.route('/addPost').post(controller.addPost); // add post
 router.route('/getAllPosts').get(controller.getAllPosts); //get all posts
 router.route('/deletePost/:postId').delete(controller.deletePost); // delete post
+router.route('/likedStatus/:postId').get(controller.likedStatus); // get liked status
 
 export default router;
