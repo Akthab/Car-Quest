@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@mui/material';
 
-import PostCard from '../../components/post_card';
+import PostCard from './components/post_card';
 
 const Home = (props) => {
 	const { handleGoProfile, handleGoAddPost, posts, postIsLoading } = props;

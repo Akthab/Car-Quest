@@ -28,6 +28,7 @@
     "react-modal": "^3.16.1",
     "react-phone-number-input": "^3.3.6",
     "react-redux": "^8.1.2",
+    "socket.io-client": "^4.7.2",
     "yup": "^1.2.0"
   },
   "engines": {
