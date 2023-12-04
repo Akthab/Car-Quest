@@ -70,18 +70,30 @@ export async function login(req, res) {
 export async function register(req, res) {
 	try {
 		const newPassword = await bcrypt.hash(req.body.password, 10); // Hash the password
-		const user = await UserModel.create({
+		const user = new UserModel({
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
 			email: req.body.email,
 			phoneNumber: req.body.phoneNumber,
-			profileImage: null,
 			password: newPassword, // Use the hashed password
 		});
+
+		await user.save();
+
 		res.send({ status: 'User registered successfully' });
 	} catch (err) {
-		console.error('This is the error', err);
-		res.send({ status: 'error', error: 'Duplicate email' });
+		// Handle errors
+		if (err.code === 11000 && err.keyPattern.email) {
+			// Duplicate email error
+			res.send({ status: 'error', error: 'Duplicate email' });
+		} else if (err.code === 11000 && err.keyPattern.phoneNumber) {
+			// Duplicate phone number error
+			res.send({ status: 'error', error: 'Duplicate phone number' });
+		} else {
+			// Other errors
+			console.error('Registration error:', err);
+			res.send({ status: 'error', error: 'Internal Server Error' });
+		}
 	}
 }
 
@@ -287,5 +299,25 @@ export async function deletePost(req, res) {
 	} catch (error) {
 		console.error(error);
 		return res.status(500).json({ error: 'Internal Server Error' });
+	}
+}
+
+export async function likedStatus(req, res) {
+	const postId = req.params.postId;
+	const userId = req.query.userId;
+
+	try {
+		const post = await PostModel.findById(postId);
+
+		if (!post) {
+			return res.status(404).json({ message: 'Post not found' });
+		}
+
+		const liked = post.likedBy.includes(userId);
+
+		res.json({ liked });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: 'Internal Server Error' });
 	}
 }
