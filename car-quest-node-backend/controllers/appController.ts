@@ -10,6 +10,8 @@ import { UserDetailsResponse } from '../model/userResponse';
 import { PostDetailsResponse } from '../model/postResponse';
 import { v4 as uuidv4 } from 'uuid';
 import sharp from 'sharp';
+import { StatusCodes } from 'http-status-codes';
+import ResponseService from '../services/response.service.js';
 
 /** POST: http://localhost:8080/api/login 
  * @param: {
@@ -225,23 +227,8 @@ export async function addPost(req, res) {
 }
 */
 export async function getUserDetailsByHeader(req, res: Response) {
-	const token = req.headers.authorization.split(' ')[1];
-
 	try {
-		// Verify the bearer token.
-		const decoded = jwt.verify(token, 'secret123');
-
-		let email: string | undefined = undefined;
-
-		if (typeof decoded === 'object') {
-			// Get the user's email from the JwtPayload object.
-			email = decoded.email;
-		} else {
-			// The decoded token is a string, so the email property does not exist.
-			email = undefined;
-		}
-
-		const user = await UserModel.findOne({ email: email });
+		const user = req.user;
 
 		if (user != null) {
 			const userDetailsResponse = new UserDetailsResponse(
@@ -252,7 +239,15 @@ export async function getUserDetailsByHeader(req, res: Response) {
 				user.phoneNumber
 			);
 
-			res.json(userDetailsResponse);
+			return res
+				.status(StatusCodes.OK)
+				.send(
+					ResponseService.respond(
+						'1-USER-000',
+						'User Details fetched successfully',
+						userDetailsResponse
+					)
+				);
 		} else {
 			return res.json({ status: 'No user found for the token' });
 		}

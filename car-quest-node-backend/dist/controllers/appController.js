@@ -14,6 +14,8 @@ const client_s3_1 = require("@aws-sdk/client-s3");
 const userResponse_1 = require("../model/userResponse");
 const uuid_1 = require("uuid");
 const sharp_1 = __importDefault(require("sharp"));
+const http_status_codes_1 = require("http-status-codes");
+const response_service_js_1 = __importDefault(require("../services/response.service.js"));
 /** POST: http://localhost:8080/api/login
  * @param: {
   "email" : "hello@gmail.com",
@@ -203,23 +205,13 @@ exports.addPost = addPost;
 }
 */
 async function getUserDetailsByHeader(req, res) {
-    const token = req.headers.authorization.split(' ')[1];
     try {
-        // Verify the bearer token.
-        const decoded = jsonwebtoken_1.default.verify(token, 'secret123');
-        let email = undefined;
-        if (typeof decoded === 'object') {
-            // Get the user's email from the JwtPayload object.
-            email = decoded.email;
-        }
-        else {
-            // The decoded token is a string, so the email property does not exist.
-            email = undefined;
-        }
-        const user = await User_model_js_1.default.findOne({ email: email });
+        const user = req.user;
         if (user != null) {
             const userDetailsResponse = new userResponse_1.UserDetailsResponse(user.id, user.firstName, user.lastName, user.email, user.phoneNumber);
-            res.json(userDetailsResponse);
+            return res
+                .status(http_status_codes_1.StatusCodes.OK)
+                .send(response_service_js_1.default.respond('1-USER-000', '1-COMN-000', userDetailsResponse));
         }
         else {
             return res.json({ status: 'No user found for the token' });

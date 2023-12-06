@@ -22,16 +22,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const requireAuth_js_1 = __importDefault(require("../middleware/requireAuth.js"));
 const router = (0, express_1.Router)();
 const controller = __importStar(require("../controllers/appController"));
+// router.use(requireAuth);
 router.route('/login').post(controller.login); // login user
 router.route('/register').post(controller.register); // register user
 router.route('/updateUser').post(controller.updateUser); // update user
-router.route('/getUserDetailsByHeader').post(controller.getUserDetailsByHeader); // get user details by header
-router.route('/addPost').post(controller.addPost); // add post
+router
+    .route('/getUserDetailsByHeader')
+    .post(requireAuth_js_1.default, controller.getUserDetailsByHeader); // get user details by header
+router.route('/addPost').post(requireAuth_js_1.default, controller.addPost); // add post
 router.route('/getAllPosts').get(controller.getAllPosts); //get all posts
-router.route('/deletePost/:postId').delete(controller.deletePost); // delete post
-router.route('/likedStatus/:postId').get(controller.likedStatus);
+router.route('/deletePost/:postId').delete(requireAuth_js_1.default, controller.deletePost); // delete post
+router.route('/likedStatus/:postId').get(controller.likedStatus); // get liked status
 exports.default = router;
