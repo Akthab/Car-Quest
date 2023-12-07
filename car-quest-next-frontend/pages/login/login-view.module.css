@@ -41,7 +41,7 @@
 
 .information_cont {
 	position: relative;
-	width: 40vh; /* Adjust the size as needed */
+	width: 60vh; /* Adjust the size as needed */
 	height: 60vh; /* Adjust the size as needed */
 	background-color: rgba(97, 233, 243, 0.3);
 	backdrop-filter: blur(10px);
@@ -55,7 +55,8 @@
 	background: linear-gradient(45deg, #58ff5d, #a83367);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
-	-webkit-text-stroke: 0.4px black;
+	-webkit-text-stroke: 0.8px black;
+	font-size: 36px;
 }
 
 .login_cont {

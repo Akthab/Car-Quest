@@ -5,7 +5,13 @@ import { Button } from '@mui/material';
 import PostCard from './components/post_card';
 
 const Home = (props) => {
-	const { handleGoProfile, handleGoAddPost, posts, postIsLoading } = props;
+	const {
+		handleGoProfile,
+		handleGoAddPost,
+		posts,
+		postIsLoading,
+		handleLogOut,
+	} = props;
 
 	return (
 		<div>
@@ -22,6 +28,13 @@ const Home = (props) => {
 				className='bg-blue-500'
 			>
 				Add Post
+			</Button>
+			<Button
+				variant='contained'
+				onClick={handleLogOut}
+				className='bg-blue-500'
+			>
+				Log Out
 			</Button>
 			<div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
 				{postIsLoading ? (
