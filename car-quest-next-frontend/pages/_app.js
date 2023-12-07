@@ -4,8 +4,9 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SnackbarProvider } from 'notistack';
 import 'react-image-crop/dist/ReactCrop.css';
-import { store } from '../store/reduxStore';
+import { persistor, store } from '../store/reduxStore';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import React from 'react';
 const queryClient = new QueryClient();
 
@@ -14,7 +15,9 @@ export default function App({ Component, pageProps }) {
 		<Provider store={store}>
 			<QueryClientProvider client={queryClient}>
 				<SnackbarProvider maxSnack={3}>
-					<Component {...pageProps} />;
+					<PersistGate loading={null} persistor={persistor}>
+						<Component {...pageProps} />;
+					</PersistGate>
 				</SnackbarProvider>
 				<ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
 			</QueryClientProvider>

@@ -46,7 +46,6 @@ const LoginFormController = () => {
 				},
 			})
 				.then((response) => {
-					console.log(response.data.user);
 					dispatch(setSessionToken(response.data.user));
 					router.push('/home');
 					setLoginIsLoading(false);
