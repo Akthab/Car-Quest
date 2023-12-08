@@ -16,6 +16,7 @@ const uuid_1 = require("uuid");
 const sharp_1 = __importDefault(require("sharp"));
 const http_status_codes_1 = require("http-status-codes");
 const response_service_js_1 = __importDefault(require("../services/response.service.js"));
+const response_1 = require("../constants/response");
 /** POST: http://localhost:8080/api/login
  * @param: {
   "email" : "hello@gmail.com",
@@ -28,25 +29,37 @@ async function login(req, res) {
             email: req.body.email,
         });
         if (!user) {
-            return res.send({
-                status: 'error',
-                error: 'Invalid user does not exist',
-            });
+            return res
+                .status(http_status_codes_1.StatusCodes.UNAUTHORIZED)
+                .send(response_service_js_1.default.respond(response_1.ResponseCode.USER_ERROR, response_1.ResponseMessage.NO_USER));
+            // return res.send({
+            // 	status: 'error',
+            // 	error: 'Invalid user does not exist',
+            // });
         }
         if (typeof req.body.password === 'undefined' || req.body.password === '') {
             // Password is empty or undefined
-            return res.send({ status: 'error', error: 'No password' });
+            return res
+                .status(http_status_codes_1.StatusCodes.NOT_ACCEPTABLE)
+                .send(response_service_js_1.default.respond(response_1.ResponseCode.USER_ERROR, response_1.ResponseMessage.NO_PASSWORD));
+            // return res.send({ status: 'error', error: 'No password' });
         }
         const isPasswordValid = await bcryptjs_1.default.compare(req.body.password, user.password);
         if (isPasswordValid) {
             const token = jsonwebtoken_1.default.sign({
                 name: user.firstName,
                 email: user.email,
-            }, 'secret123');
-            return res.json({ status: 'User Login Successfully', user: token });
+            }, process.env.JWT_SECRET_KEY);
+            return res
+                .status(http_status_codes_1.StatusCodes.OK)
+                .send(response_service_js_1.default.respond(response_1.ResponseCode.AUTH_SUCCESS, response_1.ResponseMessage.LOGIN_SUCCESS, token));
+            // return res.json({ status: 'User Login Successfully', user: token });
         }
         else {
-            return res.send({ status: 'error', error: 'Invalid credentials' });
+            return res
+                .status(http_status_codes_1.StatusCodes.UNAUTHORIZED)
+                .send(response_service_js_1.default.respond(response_1.ResponseCode.USER_ERROR, response_1.ResponseMessage.INVALID_CREDENTIALS));
+            // return res.send({ status: 'error', error: 'Invalid credentials' });
         }
     }
     catch (error) {
@@ -210,8 +223,8 @@ async function getUserDetailsByHeader(req, res) {
         if (user != null) {
             const userDetailsResponse = new userResponse_1.UserDetailsResponse(user.id, user.firstName, user.lastName, user.email, user.phoneNumber);
             return res
-                .status(http_status_codes_1.StatusCodes.OK)
-                .send(response_service_js_1.default.respond('1-USER-000', '1-COMN-000', userDetailsResponse));
+                .status(http_status_codes_1.StatusCodes.CREATED)
+                .send(response_service_js_1.default.respond('1-USER-000', 'User Details fetched successfully', userDetailsResponse));
         }
         else {
             return res.json({ status: 'No user found for the token' });

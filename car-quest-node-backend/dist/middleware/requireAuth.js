@@ -7,9 +7,8 @@ const User_model_js_1 = __importDefault(require("../models/User.model.js"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const requireAuth = async (req, res, next) => {
     const { authorization } = req.headers;
-    console.log(' In the require auth  ' + authorization);
     if (!authorization) {
-        return res.status(401).json({ errror: 'Authorization token required' });
+        return res.status(401).json({ error: 'Authorization token required' });
     }
     const token = authorization.split(' ')[1];
     try {
