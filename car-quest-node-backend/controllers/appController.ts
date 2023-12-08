@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import sharp from 'sharp';
 import { StatusCodes } from 'http-status-codes';
 import ResponseService from '../services/response.service.js';
+import { ResponseMessage, ResponseCode } from '../constants/response';
 
 /** POST: http://localhost:8080/api/login 
  * @param: {
@@ -26,15 +27,26 @@ export async function login(req, res) {
 		});
 
 		if (!user) {
-			return res.send({
-				status: 'error',
-				error: 'Invalid user does not exist',
-			});
+			return res
+				.status(StatusCodes.UNAUTHORIZED)
+				.send(
+					ResponseService.respond(
+						ResponseCode.USER_ERROR,
+						ResponseMessage.NO_USER
+					)
+				);
 		}
 
 		if (typeof req.body.password === 'undefined' || req.body.password === '') {
 			// Password is empty or undefined
-			return res.send({ status: 'error', error: 'No password' });
+			return res
+				.status(StatusCodes.NOT_ACCEPTABLE)
+				.send(
+					ResponseService.respond(
+						ResponseCode.USER_ERROR,
+						ResponseMessage.NO_PASSWORD
+					)
+				);
 		}
 
 		const isPasswordValid = await bcrypt.compare(
@@ -48,15 +60,37 @@ export async function login(req, res) {
 					name: user.firstName,
 					email: user.email,
 				},
-				'secret123'
+				process.env.JWT_SECRET_KEY
 			);
 
-			return res.json({ status: 'User Login Successfully', user: token });
+			return res
+				.status(StatusCodes.OK)
+				.send(
+					ResponseService.respond(
+						ResponseCode.AUTH_SUCCESS,
+						ResponseMessage.LOGIN_SUCCESS,
+						token
+					)
+				);
 		} else {
-			return res.send({ status: 'error', error: 'Invalid credentials' });
+			return res
+				.status(StatusCodes.UNAUTHORIZED)
+				.send(
+					ResponseService.respond(
+						ResponseCode.USER_ERROR,
+						ResponseMessage.INVALID_CREDENTIALS
+					)
+				);
 		}
 	} catch (error) {
-		return res.json({ status: 'error', user: false });
+		return res
+			.status(StatusCodes.BAD_REQUEST)
+			.send(
+				ResponseService.respond(
+					ResponseCode.SERVER_ERROR,
+					ResponseMessage.INTERNAL_SERVER_ERROR
+				)
+			);
 	}
 }
 
@@ -243,13 +277,20 @@ export async function getUserDetailsByHeader(req, res: Response) {
 				.status(StatusCodes.OK)
 				.send(
 					ResponseService.respond(
-						'1-USER-000',
-						'User Details fetched successfully',
+						ResponseCode.FETCH_USER_DETAILS_SUCCESS,
+						ResponseMessage.GET_USER_DETAILS_SUCCESS,
 						userDetailsResponse
 					)
 				);
 		} else {
-			return res.json({ status: 'No user found for the token' });
+			return res
+				.status(StatusCodes.UNAUTHORIZED)
+				.send(
+					ResponseService.respond(
+						ResponseCode.USER_ERROR,
+						ResponseMessage.NO_USER
+					)
+				);
 		}
 	} catch (error) {
 		res.json({ status: 'error', error: 'invalid token' });

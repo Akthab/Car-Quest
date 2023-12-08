@@ -33,7 +33,7 @@ const controller = __importStar(require("../controllers/appController"));
 // router.use(requireAuth);
 router.route('/login').post(controller.login); // login user
 router.route('/register').post(controller.register); // register user
-router.route('/updateUser').post(controller.updateUser); // update user
+router.route('/updateUser').post(requireAuth_js_1.default, controller.updateUser); // update user
 router
     .route('/getUserDetailsByHeader')
     .post(requireAuth_js_1.default, controller.getUserDetailsByHeader); // get user details by header
