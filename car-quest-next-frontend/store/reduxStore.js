@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from '../store/slice/userSlice';
+import userReducer from './slice/userSlice';
+// import menuSlice from './slice/menuSlice';
 import {
 	persistReducer,
 	persistStore,
@@ -11,6 +12,7 @@ import {
 	REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // Defaults to localStorage for web
+import menuSlice from './slice/menuSlice';
 
 // Configure Persist
 const persistConfig = {
@@ -25,6 +27,7 @@ const persistedUserReducer = persistReducer(persistConfig, userReducer);
 const store = configureStore({
 	reducer: {
 		user: persistedUserReducer,
+		menu: menuSlice,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware({
