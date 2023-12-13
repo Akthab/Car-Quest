@@ -16,7 +16,7 @@ import React from 'react';
 
 const MainDrawer = ({ open, handleDrawerToggle, window }) => {
 	const theme = useTheme();
-	// const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
+	const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
 
 	// responsive drawer container
 	const container =
@@ -32,33 +32,33 @@ const MainDrawer = ({ open, handleDrawerToggle, window }) => {
 			sx={{ flexShrink: { md: 0 }, zIndex: 1300 }}
 			aria-label='mailbox folders'
 		>
-			{/* {!matchDownMD ? (
+			{!matchDownMD ? (
 				<MiniDrawerStyled variant='permanent' open={open}>
 					{drawerHeader}
 					{drawerContent}
 				</MiniDrawerStyled>
-			) : ( */}
-			<Drawer
-				container={container}
-				variant='temporary'
-				open={open}
-				onClose={handleDrawerToggle}
-				ModalProps={{ keepMounted: true }}
-				sx={{
-					display: { xs: 'block', lg: 'none' },
-					'& .MuiDrawer-paper': {
-						boxSizing: 'border-box',
-						width: 260,
-						// borderRight: `1px solid ${theme.palette.divider}`,
-						backgroundImage: 'none',
-						boxShadow: 'inherit',
-					},
-				}}
-			>
-				{open && drawerHeader}
-				{open && drawerContent}
-			</Drawer>
-			{/* )} */}
+			) : (
+				<Drawer
+					container={container}
+					variant='temporary'
+					open={open}
+					onClose={handleDrawerToggle}
+					ModalProps={{ keepMounted: true }}
+					sx={{
+						display: { xs: 'block', lg: 'none' },
+						'& .MuiDrawer-paper': {
+							boxSizing: 'border-box',
+							width: 260,
+							// borderRight: `1px solid ${theme.palette.divider}`,
+							backgroundImage: 'none',
+							boxShadow: 'inherit',
+						},
+					}}
+				>
+					{open && drawerHeader}
+					{open && drawerContent}
+				</Drawer>
+			)}
 		</Box>
 	);
 };

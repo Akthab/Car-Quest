@@ -15,12 +15,13 @@ import Drawer from './Drawer';
 import { openDrawer } from '../../store/slice/menuSlice';
 import React from 'react';
 import Header from './Header';
+import Profile from '../../pages/profile';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
-const MainLayout = () => {
+export default function MainLayout({ children }) {
 	const theme = useTheme();
-	// const matchDownLG = useMediaQuery(theme.breakpoints.down('xl'));
+	const matchDownLG = useMediaQuery(theme.breakpoints.down('xl'));
 	const dispatch = useDispatch();
 
 	// @ts-ignore
@@ -36,14 +37,11 @@ const MainLayout = () => {
 	// set media wise responsive drawer
 	useEffect(() => {
 		setOpen(true);
-		// dispatch(openDrawer({ drawerOpen: !matchDownLG }));
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		dispatch(openDrawer({ drawerOpen: !matchDownLG }));
 	}, []);
 
 	useEffect(() => {
 		if (open !== drawerOpen) setOpen(drawerOpen);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [drawerOpen]);
 
 	return (
@@ -55,11 +53,14 @@ const MainLayout = () => {
 				sx={{ width: '100%', flexGrow: 1, p: { xs: 2, sm: 3 } }}
 			>
 				<Toolbar />
+				{children}
+				{/* <Profile /> */}
+				{/* <Toolbar /> */}
 				{/* <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} /> */}
 				{/* <Outlet /> */}
 			</Box>
 		</Box>
 	);
-};
+}
 
-export default MainLayout;
+// export default MainLayout;

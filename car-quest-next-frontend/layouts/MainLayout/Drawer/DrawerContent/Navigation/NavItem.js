@@ -13,7 +13,7 @@ import {
 	ListItemText,
 	Typography,
 } from '@mui/material';
-
+import Link from 'next/link';
 // project import
 import { activeItem } from '../../../../../store/slice/menuSlice';
 import React from 'react';
@@ -135,15 +135,19 @@ const NavItem = ({ item, level }) => {
 			{(drawerOpen || (!drawerOpen && level !== 1)) && (
 				<ListItemText
 					primary={
-						<Typography
-							variant='h6'
-							sx={{
-								color: isSelected ? iconSelectedColor : textColor,
-								fontSize: '1rem',
-							}}
-						>
+						<Link href={item.url}>
+							<i className='fas fa-fingerprint text-blueGray-400 mr-2 text-sm'></i>{' '}
 							{item.title}
-						</Typography>
+						</Link>
+						// <Typography
+						// 	variant='h6'
+						// 	sx={{
+						// 		color: isSelected ? iconSelectedColor : textColor,
+						// 		fontSize: '1rem',
+						// 	}}
+						// >
+						// 	{item.title}
+						// </Typography>
 					}
 				/>
 			)}
