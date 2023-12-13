@@ -1,3 +1,4 @@
+// @ts-nocheck
 // material-ui
 import { styled } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
@@ -7,7 +8,7 @@ import Drawer from '@mui/material/Drawer';
 
 const openedMixin = (theme) => ({
 	width: 260,
-	borderRight: `1px solid blue`,
+	borderRight: `1px solid grey`,
 	transition: theme.transitions.create('width', {
 		easing: theme.transitions.easing.sharp,
 		duration: theme.transitions.duration.enteringScreen,
@@ -24,7 +25,7 @@ const closedMixin = (theme) => ({
 	overflowX: 'hidden',
 	width: 0,
 	borderRight: 'none',
-	boxShadow: theme.customShadows.z1,
+	// boxShadow: theme.customShadows.z1,
 });
 
 // ==============================|| DRAWER - MINI STYLED ||============================== //

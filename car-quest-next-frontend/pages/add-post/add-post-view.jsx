@@ -19,6 +19,8 @@ import Select from '@mui/material/Select';
 // third party
 import { FormikProvider } from 'formik';
 import Dropzone from '../../components/drop_zone';
+
+import MainLayout from '../../layouts/MainLayout';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
@@ -325,6 +327,7 @@ const AddPost = (props) => {
 };
 
 export default AddPost;
+
 // function getRootProps(): React.JSX.IntrinsicAttributes & React.ClassAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement> {
 //   throw new Error("Function not implemented.");
 // }
