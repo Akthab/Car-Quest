@@ -17,6 +17,7 @@ import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { useSelector } from 'react-redux';
 import Dropzone from '../../components/drop_zone';
+// import MainLayout from '../../layouts/MainLayout';
 
 const SmallAvatar = styled(Avatar)(({ theme }) => ({
 	width: 22,
@@ -123,3 +124,5 @@ const ProfilePage = (props) => {
 };
 
 export default ProfilePage;
+
+// ProfilePage.layout = MainLayout;

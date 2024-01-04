@@ -24,7 +24,7 @@ const HomePageController = () => {
 			getUserDetailsByHeader();
 			getAllPosts();
 		}
-	}, []);
+	}, [isLoggedIn]);
 
 	const handleGoProfile = () => {
 		router.push('/profile');

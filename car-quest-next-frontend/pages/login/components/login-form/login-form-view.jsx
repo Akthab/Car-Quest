@@ -45,15 +45,19 @@ const LoginFormView = (props) => {
 
 	return (
 		<>
-			<Typography className={styles.typography_style}>
-				<MdWavingHand />
-				Hey, Hello Welcome
-			</Typography>
+			<div style={{ display: 'flex', gap: 12, paddingBottom: 26 }}>
+				<MdWavingHand style={{ fontSize: 26, marginTop: 2 }} />
+				<Typography className={styles.typography_style} sx={{ fontSize: 20 }}>
+					Hey, Hello Welcome
+				</Typography>
+			</div>
 			<FormikProvider value={formik}>
 				<Grid container spacing={3}>
 					<Grid item xs={12}>
 						<Stack spacing={1}>
-							<InputLabel htmlFor='email-login'>Email Address</InputLabel>
+							<InputLabel htmlFor='email-login' sx={{ color: 'black' }}>
+								Email Address
+							</InputLabel>
 							<OutlinedInput
 								id='email'
 								type='email'
@@ -75,7 +79,9 @@ const LoginFormView = (props) => {
 					</Grid>
 					<Grid item xs={12}>
 						<Stack spacing={1}>
-							<InputLabel htmlFor='password-login'>Password</InputLabel>
+							<InputLabel htmlFor='password-login' sx={{ color: 'black' }}>
+								Password
+							</InputLabel>
 							<OutlinedInput
 								fullWidth
 								error={Boolean(touched.password && errors.password)}
@@ -152,7 +158,7 @@ const LoginFormView = (props) => {
 							onClick={handleSignIn}
 							startIcon={loginIsLoading ? <CircularProgress size={15} /> : null}
 						>
-							Logins
+							Login
 						</Button>
 						{/* </AnimateButton> */}
 					</Grid>

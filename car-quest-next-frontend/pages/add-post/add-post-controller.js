@@ -5,6 +5,8 @@ import { backendAuth } from '../../axios/instance/BaseAxios';
 import * as Yup from 'yup';
 import { useRouter } from 'next/router';
 
+import MainLayout from '../../layouts/MainLayout';
+
 const AddPostController = () => {
 	const router = useRouter();
 	const [newFile, setNewFile] = useState('');
@@ -73,3 +75,5 @@ const AddPostController = () => {
 };
 
 export default AddPostController;
+
+AddPostController.layout = MainLayout;

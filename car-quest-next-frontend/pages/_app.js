@@ -11,12 +11,16 @@ import React from 'react';
 const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }) {
+	const Layout = Component.layout || (({ children }) => <>{children}</>);
+
 	return (
 		<Provider store={store}>
 			<QueryClientProvider client={queryClient}>
 				<SnackbarProvider maxSnack={3}>
 					<PersistGate loading={null} persistor={persistor}>
-						<Component {...pageProps} />;
+						<Layout>
+							<Component {...pageProps} />;
+						</Layout>
 					</PersistGate>
 				</SnackbarProvider>
 				<ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
