@@ -23,6 +23,9 @@ app.use(express_1.default.json()); // To parse JSON-encoded bodies
 app.use(express_1.default.urlencoded({ extended: true }));
 mongoose_1.default.connect(process.env.MONGODB_URL);
 app.use('/api', route_1.default);
+app.get('/hello', (req, res) => {
+    res.send('Hello World');
+});
 app.use((error, req, res, next) => {
     console.error(error); // Log the error to the console
     res.status(500).json({ error: 'Internal Server Error' });

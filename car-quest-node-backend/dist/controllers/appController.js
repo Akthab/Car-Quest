@@ -32,17 +32,12 @@ async function login(req, res) {
             return res
                 .status(http_status_codes_1.StatusCodes.UNAUTHORIZED)
                 .send(response_service_js_1.default.respond(response_1.ResponseCode.USER_ERROR, response_1.ResponseMessage.NO_USER));
-            // return res.send({
-            // 	status: 'error',
-            // 	error: 'Invalid user does not exist',
-            // });
         }
         if (typeof req.body.password === 'undefined' || req.body.password === '') {
             // Password is empty or undefined
             return res
                 .status(http_status_codes_1.StatusCodes.NOT_ACCEPTABLE)
                 .send(response_service_js_1.default.respond(response_1.ResponseCode.USER_ERROR, response_1.ResponseMessage.NO_PASSWORD));
-            // return res.send({ status: 'error', error: 'No password' });
         }
         const isPasswordValid = await bcryptjs_1.default.compare(req.body.password, user.password);
         if (isPasswordValid) {
@@ -53,17 +48,17 @@ async function login(req, res) {
             return res
                 .status(http_status_codes_1.StatusCodes.OK)
                 .send(response_service_js_1.default.respond(response_1.ResponseCode.AUTH_SUCCESS, response_1.ResponseMessage.LOGIN_SUCCESS, token));
-            // return res.json({ status: 'User Login Successfully', user: token });
         }
         else {
             return res
                 .status(http_status_codes_1.StatusCodes.UNAUTHORIZED)
                 .send(response_service_js_1.default.respond(response_1.ResponseCode.USER_ERROR, response_1.ResponseMessage.INVALID_CREDENTIALS));
-            // return res.send({ status: 'error', error: 'Invalid credentials' });
         }
     }
     catch (error) {
-        return res.json({ status: 'error', user: false });
+        return res
+            .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+            .send(response_service_js_1.default.respond(response_1.ResponseCode.SERVER_ERROR, response_1.ResponseMessage.INTERNAL_SERVER_ERROR));
     }
 }
 exports.login = login;
@@ -223,11 +218,13 @@ async function getUserDetailsByHeader(req, res) {
         if (user != null) {
             const userDetailsResponse = new userResponse_1.UserDetailsResponse(user.id, user.firstName, user.lastName, user.email, user.phoneNumber);
             return res
-                .status(http_status_codes_1.StatusCodes.CREATED)
-                .send(response_service_js_1.default.respond('1-USER-000', 'User Details fetched successfully', userDetailsResponse));
+                .status(http_status_codes_1.StatusCodes.OK)
+                .send(response_service_js_1.default.respond(response_1.ResponseCode.FETCH_USER_DETAILS_SUCCESS, response_1.ResponseMessage.GET_USER_DETAILS_SUCCESS, userDetailsResponse));
         }
         else {
-            return res.json({ status: 'No user found for the token' });
+            return res
+                .status(http_status_codes_1.StatusCodes.UNAUTHORIZED)
+                .send(response_service_js_1.default.respond(response_1.ResponseCode.USER_ERROR, response_1.ResponseMessage.NO_USER));
         }
     }
     catch (error) {

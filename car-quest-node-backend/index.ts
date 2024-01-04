@@ -24,6 +24,10 @@ mongoose.connect(process.env.MONGODB_URL);
 
 app.use('/api', router);
 
+app.get('/hello', (req, res) => {
+	res.send('Hello World');
+});
+
 app.use((error, req, res, next) => {
 	console.error(error); // Log the error to the console
 	res.status(500).json({ error: 'Internal Server Error' });
